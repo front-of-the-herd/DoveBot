@@ -7,6 +7,7 @@ const { isSchoolRelated, sanitizeInput } = require('../utils/validation');
 router.post('/', async (req, res) => {
   try {
     const { message } = req.body;
+    console.log('Received message:', message);
     
     if (!message || message.trim().length === 0) {
       return res.status(400).json({ error: 'Message is required' });
@@ -22,6 +23,7 @@ router.post('/', async (req, res) => {
     }
 
     const relevantContent = await searchKnowledgeBase(sanitizedMessage);
+    console.log('Found relevant content:', relevantContent);
     
     if (relevantContent.length === 0) {
       return res.json({
@@ -31,6 +33,7 @@ router.post('/', async (req, res) => {
     }
 
     const response = await generateResponse(sanitizedMessage, relevantContent);
+    console.log('Generated response:', response);
     
     res.json({
       response: response.text,
@@ -38,9 +41,13 @@ router.post('/', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('Chat error:', {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause
+    });
     res.status(500).json({ 
-      error: 'Sorry, I encountered an error. Please try again! 🤖' 
+      error: 'Sorry, something went wrong. Please try again!' 
     });
   }
 });

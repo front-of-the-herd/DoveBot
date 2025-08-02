@@ -1,6 +1,6 @@
 const GROQ_CONFIG = {
     apiUrl: 'https://api.groq.com/openai/v1/chat/completions',
-    model: 'mixtral-8x7b-32768',
+    model: 'llama-3.3-70b-versatile',
     settings: {
         temperature: 0.5,
         max_tokens: 2048
