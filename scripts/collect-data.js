@@ -188,7 +188,7 @@ class DovesdaleDataCollector {
                         }
                         
                         // Add keywords
-                        const keywords = this.extractKeywords(item.content + ' ' + item.title);
+                        const keywords = extractKeywords(item.content + ' ' + item.title);
                         keywords.forEach(keyword => {
                             db.run(
                                 `INSERT OR IGNORE INTO keywords (document_id, keyword) VALUES (?, ?)`,
@@ -203,14 +203,14 @@ class DovesdaleDataCollector {
         }
     }
     
-    extractKeywords(text) {
-        const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by']);
-        return text.toLowerCase()
-            .replace(/[^\w\s]/g, ' ')
-            .split(/\s+/)
-            .filter(word => word.length > 2 && !stopWords.has(word))
-            .slice(0, 20);
-    }
+function extractKeywords(text) {
+    const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by']);
+    return text.toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .split(/\s+/)
+        .filter(word => word.length > 2 && !stopWords.has(word))
+        .slice(0, 20);
+}
     
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));

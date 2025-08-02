@@ -37,10 +37,14 @@ npm install
 ### 4. Collect School Data
 
 ```bash
-node scripts/collect-data.js
+# Add comprehensive school data (recommended)
+npm run add-school-data
+
+# Or scrape the website (limited content)
+npm run collect-data
 ```
 
-This will scrape the Dovedale Primary School website and store the information in the database.
+The `add-school-data` script adds comprehensive, manually curated information about the school including term dates, uniform policy, meals, clubs, and more.
 
 ### 5. Start the Application
 
@@ -104,11 +108,13 @@ Edit `scripts/collect-data.js` to add more websites or data sources.
 
 ### Updating the Knowledge Base
 
-Run the data collection script periodically to keep information current:
+To update the knowledge base with comprehensive school information:
 
 ```bash
-node scripts/collect-data.js
+npm run add-school-data
 ```
+
+This will add or update all school information including term dates, policies, and activities.
 
 ### Modifying the AI Personality
 
