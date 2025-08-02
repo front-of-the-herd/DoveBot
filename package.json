@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "setup": "node setup.js",
+    "collect-data": "node scripts/collect-data.js"
   },
   "dependencies": {
     "express": "^4.18.2",
