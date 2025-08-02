@@ -11,7 +11,10 @@ async function searchKnowledgeBase(query) {
       return;
     }
     
-    const keywordPlaceholders = keywords.map(() => '?').join(',');
+    // Add semantic synonyms for better matching
+    const expandedKeywords = expandKeywords(keywords);
+    
+    const keywordPlaceholders = expandedKeywords.map(() => '?').join(',');
     const searchQuery = `
       SELECT DISTINCT d.*, 
              COUNT(k.keyword) as relevance_score
@@ -20,10 +23,10 @@ async function searchKnowledgeBase(query) {
       WHERE k.keyword IN (${keywordPlaceholders})
       GROUP BY d.id
       ORDER BY relevance_score DESC, d.last_updated DESC
-      LIMIT 3
+      LIMIT 5
     `;
     
-    db.all(searchQuery, keywords, (err, rows) => {
+    db.all(searchQuery, expandedKeywords, (err, rows) => {
       if (err) {
         console.error('Search error:', err);
         reject(err);
@@ -44,6 +47,36 @@ function extractKeywords(text) {
     .split(/\s+/)
     .filter(word => word.length > 2 && !stopWords.has(word))
     .slice(0, 10);
+}
+
+function expandKeywords(keywords) {
+  const synonyms = {
+    'lunch': ['meals', 'food', 'dinner', 'menu'],
+    'dinner': ['meals', 'lunch', 'food', 'menu'],
+    'food': ['meals', 'lunch', 'dinner', 'menu'],
+    'menu': ['meals', 'lunch', 'food', 'dinner'],
+    'uniform': ['clothes', 'dress', 'attire'],
+    'clothes': ['uniform', 'dress', 'attire'],
+    'term': ['semester', 'period', 'dates'],
+    'dates': ['term', 'calendar', 'schedule'],
+    'calendar': ['term', 'dates', 'schedule'],
+    'clubs': ['activities', 'after', 'school'],
+    'activities': ['clubs', 'after', 'school'],
+    'contact': ['phone', 'email', 'address', 'number'],
+    'phone': ['contact', 'number', 'call'],
+    'hours': ['time', 'schedule', 'timing'],
+    'time': ['hours', 'schedule', 'timing']
+  };
+  
+  const expanded = [...keywords];
+  
+  keywords.forEach(keyword => {
+    if (synonyms[keyword]) {
+      expanded.push(...synonyms[keyword]);
+    }
+  });
+  
+  return [...new Set(expanded)]; // Remove duplicates
 }
 
 module.exports = {
