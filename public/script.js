@@ -21,7 +21,7 @@ class DoveBot {
         if (!message) return;
         
         // Add user message
-        this.addMessage(message, 'user');
+        this.appendMessage(message, true);
         this.messageInput.value = '';
         this.setLoading(true);
         
@@ -38,30 +38,25 @@ class DoveBot {
             const data = await response.json();
             
             if (response.ok) {
-                this.addMessage(data.response, 'bot');
+                this.appendMessage(data.response);
             } else {
-                this.addMessage('Sorry, something went wrong. Please try again!', 'bot');
+                this.appendMessage('Sorry, something went wrong. Please try again!');
             }
         } catch (error) {
             console.error('Error:', error);
-            this.addMessage('Sorry, I cannot connect right now. Please try again later!', 'bot');
+            this.appendMessage('Sorry, I cannot connect right now. Please try again later!');
         } finally {
             this.setLoading(false);
         }
     }
     
-    addMessage(content, type) {
+    appendMessage(message, isUser = false) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${type}-message`;
-        
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'message-content';
-        contentDiv.textContent = content;
-        
-        messageDiv.appendChild(contentDiv);
+        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageDiv.textContent = message;
         this.messagesContainer.appendChild(messageDiv);
         
-        // Scroll to bottom
+        // Auto-scroll to the latest message
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
     }
     
