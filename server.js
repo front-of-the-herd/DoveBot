@@ -5,6 +5,7 @@ const helmet = require('helmet');
 require('dotenv').config();
 
 const chatRoutes = require('./routes/chat');
+const chatRagRoutes = require('./routes/chat-rag');
 const { initializeDatabase } = require('./utils/database');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static('public'));
 
 // Routes
 app.use('/api/chat', chatRoutes);
+app.use('/api/chat-rag', chatRagRoutes);
 
 // Start server
 async function startServer() {
