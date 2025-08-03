@@ -2,7 +2,8 @@ const schoolKeywords = [
   'dovedale', 'school', 'term', 'holiday', 'uniform', 'lunch', 'dinner',
   'club', 'class', 'teacher', 'head', 'parent', 'pupil', 'student',
   'playground', 'assembly', 'homework', 'hours', 'time', 'contact',
-  'phone', 'email', 'address', 'uniform', 'pe', 'sports'
+  'phone', 'email', 'address', 'uniform', 'pe', 'sports', 'menu',
+  'food', 'meal', 'breakfast', 'snack', 'eat', 'served', 'kitchen'
 ];
 
 function isSchoolRelated(message) {
@@ -20,7 +21,14 @@ function isSchoolRelated(message) {
     /drop off/i,
     /contact/i,
     /phone/i,
-    /email/i
+    /email/i,
+    /what.*menu/i,
+    /what.*food/i,
+    /what.*served/i,
+    /what.*eat/i,
+    /what.*lunch/i,
+    /what.*dinner/i,
+    /what.*breakfast/i
   ];
   
   const hasSchoolPattern = schoolPatterns.some(pattern => 
