@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { VectorDatabase } = require('../utils/vector-db');
 const { addSchoolData } = require('./add-school-data');
 

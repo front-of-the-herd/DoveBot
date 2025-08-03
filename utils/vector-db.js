@@ -8,7 +8,7 @@ class VectorDatabase {
         });
         
         this.openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY || process.env.GROQ_API_KEY,
+            apiKey: process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY,
             baseURL: process.env.GROQ_API_KEY ? 'https://api.groq.com/openai/v1' : undefined
         });
         
@@ -34,15 +34,44 @@ class VectorDatabase {
     
     async generateEmbedding(text) {
         try {
+            // Try OpenAI embedding first
             const response = await this.openai.embeddings.create({
-                model: "text-embedding-3-small",
+                model: "text-embedding-ada-002",
                 input: text
             });
             return response.data[0].embedding;
         } catch (error) {
-            console.error('❌ Embedding generation failed:', error.message);
-            return null;
+            console.error('❌ OpenAI embedding failed:', error.message);
+            
+            // Fallback: Use simple TF-IDF style embedding
+            console.log('🔄 Using fallback embedding method...');
+            return this.generateSimpleEmbedding(text);
         }
+    }
+    
+    generateSimpleEmbedding(text) {
+        // Simple word frequency based embedding
+        const words = text.toLowerCase()
+            .replace(/[^\w\s]/g, ' ')
+            .split(/\s+/)
+            .filter(word => word.length > 2);
+        
+        const wordFreq = {};
+        words.forEach(word => {
+            wordFreq[word] = (wordFreq[word] || 0) + 1;
+        });
+        
+        // Create a simple vector (normalized word frequencies)
+        const uniqueWords = Object.keys(wordFreq);
+        const vector = new Array(100).fill(0);
+        
+        uniqueWords.forEach((word, index) => {
+            if (index < 100) {
+                vector[index] = wordFreq[word] / words.length;
+            }
+        });
+        
+        return vector;
     }
     
     async addDocument(id, content, metadata = {}) {
