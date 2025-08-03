@@ -3,6 +3,7 @@ class DoveBot {
         this.messageInput = document.getElementById('messageInput');
         this.sendButton = document.getElementById('sendButton');
         this.messagesContainer = document.getElementById('messages');
+        this.ragToggle = document.getElementById('ragToggle');
         
         // Check if all elements are found
         if (!this.messageInput) {
@@ -53,8 +54,9 @@ class DoveBot {
         this.setLoading(true);
         
         try {
-            // Send to backend
-            const response = await fetch('/api/chat', {
+            // Send to backend (choose endpoint based on toggle)
+            const endpoint = this.ragToggle.checked ? '/api/chat-rag' : '/api/chat';
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
