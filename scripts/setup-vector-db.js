@@ -47,14 +47,15 @@ INSET Days (School closed to pupils):
 - Hot meals provided daily by school kitchen
 - Cost: £2.40 per meal for Key Stage 2 pupils
 - Free school meals available for eligible families
-- Weekly menu rotates every 3 weeks
+- Weekly menu rotates every 6 weeks
 
-Current Week's Menu:
-Monday: Roast chicken with potatoes and vegetables
-Tuesday: Pasta bolognese with garlic bread
-Wednesday: Fish fingers with chips and peas
-Thursday: Shepherd's pie with vegetables
-Friday: Pizza with salad
+Current Menu Cycle:
+- Week 1: [Menu details]
+- Week 2: [Menu details]
+- Week 3: [Menu details]
+- Week 4: [Menu details]
+- Week 5: [Menu details]
+- Week 6: [Menu details]
 
 Special Dietary Requirements:
 - Vegetarian options available daily
@@ -164,4 +165,4 @@ if (require.main === module) {
     setupVectorDatabase();
 }
 
-module.exports = { setupVectorDatabase }; 
+module.exports = { setupVectorDatabase };
